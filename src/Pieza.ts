@@ -14,7 +14,7 @@ export default class Pieza {
     if (tipo) {
       this.tipo = tipo
     } else {
-      this.tipo = Math.floor(Math.random() * 7)
+      this.tipo = 5//Math.floor(Math.random() * 7)
     }
 
     this.debug = 0
@@ -68,7 +68,6 @@ export default class Pieza {
       case 5:
         // T
         this.matriz = [
-          [ false, false, false ],
           [ false, true, false ],
           [ true, true, true ],
         ]
@@ -119,38 +118,31 @@ export default class Pieza {
     this.debug++
   }
 
-  // Function to rotate the matrix 90 degree clockwise
   rotate90Clockwise () {
-    // Traverse each cycle
-    const size = this.matriz.length
-    for (let i = 0; i < size / 2; i++) {
-      for (let j = i; j < size - i - 1; j++) {
-        // Swap elements of each cycle
-        // in clockwise direction
-        const temp = this.matriz[i][j]
-        this.matriz[i][j] = this.matriz[size - 1 - j][i]
-        this.matriz[size - 1 - j][i] = this.matriz[size - 1 - i][size - 1 - j]
-        this.matriz[size - 1 - i][size - 1 - j] = this.matriz[j][size - 1 - i]
-        this.matriz[j][size - 1 - i] = temp
+    const size1 = this.matrizElementos.length
+    const size2 = this.matrizElementos[0].length
+    const newMatrix:SVGRectElement[][] = []
+    for (let j = 0; j < size2; j++) {
+      newMatrix[j] = []
+      for (let i = 0; i < size1; i++) {
+        newMatrix[j][i] = this.matrizElementos[size1 - i - 1][j]
       }
     }
+    this.matrizElementos = newMatrix
   }
 
   // Function to rotate the matrix 90 degree counter clockwise
   rotate90CounterClockwise () {
-    // Traverse each cycle
-    const size = this.matriz.length
-    for (let i = size / 2 - 1; i >= 0; i--) {
-      for (let j = i; j < size - i - 1; j++) {
-        // Swap elements of each cycle
-        // in clockwise direction
-        const temp = this.matriz[i][j]
-        this.matriz[i][j] = this.matriz[size - 1 - j][i]
-        this.matriz[size - 1 - j][i] = this.matriz[size - 1 - i][size - 1 - j]
-        this.matriz[size - 1 - i][size - 1 - j] = this.matriz[j][size - 1 - i]
-        this.matriz[j][size - 1 - i] = temp
+    const size1 = this.matrizElementos.length
+    const size2 = this.matrizElementos[0].length
+    const newMatrix:SVGRectElement[][] = []
+    for (let j = 0; j < size2; j++) {
+      newMatrix[j] = []
+      for (let i = 0; i < size1; i++) {
+        newMatrix[j][i] = this.matrizElementos[i][size2 - j - 1]
       }
     }
+    this.matrizElementos = newMatrix
   }
 
   limpiar () {

@@ -14,5 +14,6 @@ if (gameContainer) {
 
   const mainTimer = setInterval(() => {
     pieza.bajar()
+    pieza.rotate90CounterClockwise()
   }, DEFAULT_TIMER_INTERVAL)
 }
