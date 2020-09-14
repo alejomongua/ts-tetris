@@ -3,6 +3,7 @@ import './styles.css'
 
 const gameContainer = document.getElementById('game-container')
 const LISTA_DE_CLASES = [ 'bg-white', 'border', 'border-black' ]
+const DEFAULT_TIMER_INTERVAL = 1500
 
 if (gameContainer) {
   gameContainer.style.width = `${GRID_SIZE * 10}px`
@@ -10,4 +11,8 @@ if (gameContainer) {
   LISTA_DE_CLASES.forEach(clase => gameContainer.classList.add(clase))
   const pieza = new Pieza(gameContainer)
   pieza.draw()
+
+  const mainTimer = setInterval(() => {
+    pieza.bajar()
+  }, DEFAULT_TIMER_INTERVAL)
 }

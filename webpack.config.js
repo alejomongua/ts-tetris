@@ -13,6 +13,11 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
+        test: /\.js$/,
+        enforce: 'pre',
+        use: [ 'source-map-loader' ],
+      },
+      {
         test: /\.css$/,
         loader: [
           MiniCssExtractPlugin.loader,
