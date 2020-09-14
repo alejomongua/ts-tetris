@@ -20,10 +20,12 @@ module.exports = {
           {
             loader: 'postcss-loader',
             options: {
-              plugins: [
-                require('tailwindcss'),
-                require('autoprefixer'),
-              ],
+              postcssOptions: {
+                plugins: [
+                  require('tailwindcss'),
+                  require('autoprefixer'),
+                ],
+              },
             },
           },
         ],
