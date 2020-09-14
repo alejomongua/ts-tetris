@@ -2,120 +2,112 @@ export const GRID_SIZE = 40
 
 export default class Pieza {
   tipo: number
-  matriz: boolean[][]
   matrizElementos: SVGRectElement[][]
   posicionX: number
   posicionY: number
   gameContainer: HTMLElement
   className: string
-  debug: number
 
   constructor (gameContainer: HTMLElement, tipo?: number) {
+    let matriz:boolean[][]
     if (tipo) {
       this.tipo = tipo
     } else {
-      this.tipo = 5//Math.floor(Math.random() * 7)
+      this.tipo = Math.floor(Math.random() * 7)
     }
 
-    this.debug = 0
     // Genere una cadena aleatoria para la clase
     this.className = Math.random().toString(36).slice(2)
     this.gameContainer = gameContainer
-    this.posicionX = GRID_SIZE * 4
-    this.posicionY = 0
+    this.posicionX = 4
     switch (this.tipo) {
       case 0:
         // Palito
-        this.matriz = [
-          [ false, true, false, false ],
-          [ false, true, false, false ],
-          [ false, true, false, false ],
-          [ false, true, false, false ],
+        matriz = [
+          [ true, true, true, true ],
         ]
         break
       case 1:
         // L
-        this.matriz = [
-          [ false, true, false ],
-          [ false, true, false ],
-          [ false, true, true ],
+        matriz = [
+          [ true, false ],
+          [ true, false ],
+          [ true, true ],
         ]
         break
       case 2:
         // L al revés
-        this.matriz = [
-          [ false, false, true ],
-          [ false, false, true ],
-          [ false, true, true ],
+        matriz = [
+          [ false, true ],
+          [ false, true ],
+          [ true, true ],
         ]
         break
       case 3:
         // Z
-        this.matriz = [
-          [ false, false, true ],
-          [ false, true, true ],
-          [ false, true, false ],
+        matriz = [
+          [ false, true ],
+          [ true, true ],
+          [ true, false ],
         ]
         break
       case 4:
         // S
-        this.matriz = [
-          [ false, true, false ],
-          [ false, true, true ],
-          [ false, false, true ],
+        matriz = [
+          [ true, false ],
+          [ true, true ],
+          [ false, true ],
         ]
         break
       case 5:
         // T
-        this.matriz = [
+        matriz = [
           [ false, true, false ],
           [ true, true, true ],
         ]
         break
       default:
         // Cubito
-        this.matriz = [
+        matriz = [
           [ true, true ],
           [ true, true ],
         ]
         break
     }
     this.matrizElementos = []
+    this.posicionY = matriz.length
     let posY = this.posicionY
-    for (let i = 0; i < this.matriz.length; i++) {
-      const row = this.matriz[i]
+    for (let i = 0; i < matriz.length; i++) {
+      const row = matriz[i]
       this.matrizElementos[i] = []
       let posX = this.posicionX
       for (let j = 0; j < row.length; j++) {
         const element = row[j]
         this.matrizElementos[i][j] = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-        this.matrizElementos[i][j].setAttribute('x', String(posX))
-        this.matrizElementos[i][j].setAttribute('y', String(posY))
+        this.matrizElementos[i][j].setAttribute('x', String(posX * GRID_SIZE))
+        this.matrizElementos[i][j].setAttribute('y', String(posY * GRID_SIZE))
         this.matrizElementos[i][j].setAttribute('width', String(GRID_SIZE))
         this.matrizElementos[i][j].setAttribute('height', String(GRID_SIZE))
-        this.matrizElementos[i][j].setAttribute('data', String(this.debug))
         this.matrizElementos[i][j].classList.add(this.className)
         this.matrizElementos[i][j].style.fill = element ? 'black' : 'white'
         this.gameContainer.append(this.matrizElementos[i][j])
-        posX += GRID_SIZE
+        posX += 1
       }
-      posY += GRID_SIZE
+      posY += 1
     }
-    this.debug++
   }
 
   draw () {
-    let posY = this.posicionY
+    let posY = this.posicionY - this.matrizElementos.length
     this.matrizElementos.forEach(row => {
       let posX = this.posicionX
       row.forEach(element => {
-        element.setAttribute('x', String(posX))
-        element.setAttribute('y', String(posY))
-        posX += GRID_SIZE
+        element.setAttribute('x', String(posX * GRID_SIZE))
+        element.setAttribute('y', String(posY * GRID_SIZE))
+        posX += 1
       })
-      posY += GRID_SIZE
+      posY += 1
     })
-    this.debug++
   }
 
   rotate90Clockwise () {
@@ -129,6 +121,7 @@ export default class Pieza {
       }
     }
     this.matrizElementos = newMatrix
+    this.draw()
   }
 
   // Function to rotate the matrix 90 degree counter clockwise
@@ -143,6 +136,7 @@ export default class Pieza {
       }
     }
     this.matrizElementos = newMatrix
+    this.draw()
   }
 
   limpiar () {
@@ -153,7 +147,7 @@ export default class Pieza {
   }
 
   bajar () {
-    this.posicionY += GRID_SIZE
+    this.posicionY += 1
     this.draw()
   }
 }
